@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // 과목 상수 정의
+        const SUBJECT = ["국어", "영어", "수학", "웹프"];
+
+        // 성적 테이블 클래스
+        class ScoreTable {
+        // 학생 목록 배열
+        studentList = [];
+
+        // 학생 추가 메서드
+        addStudent(student) {
+            this.studentList.push(student);
+            this.updateRank(student); // 순위 업데이트
+        }
+
+        // 학번으로 학생 찾기 메서드
+        findById(studentId) {
+            for (let i = 0; i < this.studentList.length; i++) {
+            if (studentId == this.studentList[i].id) return this.studentList[i];
+            }
+        }
+        // 암호로 선생님 확인
+        findById2(password) {
+            if (password == "1234") return 1;
+        }
+
+        // 순위 업데이트 메서드
+        updateRank(student) {
+            for (let i = 0; i < this.studentList.length; i++) {
+            // 학생의 평균 점수를 비교하여 순위 결정
+            if (this.studentList[i].getAvg() < student.getAvg())
+                this.studentList[i].rank++;
+            else student.rank++;
+            }
+        }
+
+        // 테이블 그리기 메서드
+        drawTable() {
+            // 테이블 헤더 출력
+            document.write("<h2> 학생 성적 조회 </h2>");
+            document.write("학번  이름  국어 영어 수학 웹프 석차<br>");
+
+            // 학생 정보 출력
+            let i, j;
+            for (i = 0; i < this.studentList.length; i++) {
+            document.write(
+                `${this.studentList[i].id}&nbsp ${this.studentList[i].name} &nbsp `
+            );
+            for (j = 0; j < SUBJECT.length; j++) {
+                document.write(`${this.studentList[i].score[j]} &nbsp `);
+            }
+            document.write(`...${this.studentList[i].rank}<br>`);
+            }
+        }
+        }
+
+        // 학생 클래스
+        class Student {
+        // 이름, 학번, 과목별 성적, 순위 속성
+        name;
+        id;
+        score;
+        rank = 0;
+
+        // 생성자 메서드
+        constructor(name, id, score) {
+            this.name = name;
+            this.id = id;
+            this.score = score;
+        }
+
+        // 평균 점수 계산 메서드
+        getAvg() {
+            let sum = 0;
+            for (let i = 0; i < SUBJECT.length; i++) {
+            sum += this.score[i];
+            }
+            return sum / SUBJECT.length;
+        }
+
+        // 점수를 학점으로 변환하는 메서드
+        toGrade(score) {
+            switch (parseInt(score / 10)) {
+            case 10:
+            case 9:
+                return "A";
+            case 8:
+                return "B";
+            case 7:
+                return "C";
+            case 6:
+                return "D";
+            default:
+                return "F";
+            }
+        }
+
+        // 학생 성적 출력 메서드
+        drawScore() {
+            document.write(`<h3>학번: ${this.id} &nbsp 이름:${this.name}</h3>`);
+            for (let i = 0; i < SUBJECT.length; i++) {
+            document.write(
+                `${SUBJECT[i]} | ${this.score[i]} | ${this.toGrade(this.score[i])}<br>`
+            );
+            }
+        }
+        }
+
+        // 타이틀 그리기 함수
+        function drawTitle() {
+        let star = true;
+        for (let i = 0; i < 5; i++) {
+            for (let j = 0; j < 51; j++) {
+            if (i == 2) {
+                document.write("<h1>SEIS 학생정보확인서비스</h1>");
+                star = !star;
+                break;
+            } else if (star) {
+                document.write("*");
+            } else {
+                document.write("&nbsp");
+            }
+            star = !star;
+            }
+            document.write("<br>");
+        }
+        }
+        // 사용자 입력
+
+
+
+        // 타이틀 그리기
+        drawTitle();
+
+        // 데이터 정의
+        const table = new ScoreTable();
+
+        // 학생 데이터 생성
+        let s1 = new Student("강가연", 10301, [86, 46, 76, 57]);
+        let s2 = new Student("남나연", 10302, [77, 65, 86, 99]);
+        let s3 = new Student("도다연", 10303, [92, 98, 98, 97]);
+        let s4 = new Student("류라연", 10304, [86, 75, 72, 64]);
+        let s5 = new Student("문미연", 10305, [98, 100, 92, 88]);
+
+        // 학생 추가
+        table.addStudent(s1);
+        table.addStudent(s2);
+        table.addStudent(s3);
+        table.addStudent(s4);
+        table.addStudent(s5);
+
+        // 사용자 입력
+        // 사용자 입력
+
+
+        // 선생님을 경우 암호 확인 후 성적 출력
+        let isTeacher = confirm("선생님이십니까?");
+        if (isTeacher) {
+        
+            while (true) {
+            let password = prompt("암호을 입력하세요");
+            let teacher = table.findById2(password);
+        
+            if (!teacher) continue;
+            break;
+        }
+        table.drawTable();
+        } else {
+        // 학생일 경우 학번 입력 후 성적 출력
+        while (true) {
+            let studentId = prompt("학번을 입력하세요");
+            let student = table.findById(studentId);
+        
+            if (!student) continue;
+
+            student.drawScore();
+            break;
+        }
+        }
+
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
