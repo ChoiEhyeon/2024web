@@ -1,0 +1,78 @@
+/* 기본 스타일 유지 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #1f1f1f; 
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.calc {
+    width: 287px;
+    border: 1px solid #333; 
+    background-color: #ccc; 
+    padding: 5px;
+}
+
+.calc form {
+    display: grid;
+    grid-template-columns: repeat(4, 65px);
+    grid-auto-rows: 65px;
+    grid-gap: 5px;
+}
+
+.calc form input {
+    border: 2px solid #333;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.calc form input:hover {
+    box-shadow: 1px 1px 2px #333;
+}
+
+.calc form .Clear {
+    background-color: #ffa42c; 
+}
+
+.calc form .cal {
+    background-color: lawngreen; 
+}
+
+.calc form .dot {
+    background-color: rgb(0, 217, 255);
+}
+
+/* 텍스트 입력 필드 */
+.calc form input[type='text'] {
+    grid-column: span 4;
+    text-align: right;
+    padding: 0 10px;
+}
+
+.calc form .Clear {
+    grid-column: span 3;
+}
+
+.calc form .result {
+    grid-column: span 2;
+}
+
+/* 반올림, 올림, 버림 버튼 */
+.calc form input[type="button"][value="R/OFF"] {
+    background-color: lightblue;
+}
+
+.calc form input[type="button"][value="UP"] {
+    background-color: lightgreen;
+}
+
+.calc form input[type="button"][value="DOWN"] {
+    background-color: lightcoral;
+}
