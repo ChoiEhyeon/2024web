@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <style>
+      * {
+        text-align: center;
+      }
+
+      #board {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      #board tr td {
+        border: 1px solid white;
+        background: #34da79;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        cursor: pointer; /* 클릭 가능한 커서 */
+      }
+
+      #board tr td.clicked {
+        background: #6c5ee7;
+      }
+
+      #board tr td.mine {
+        background: #ff0000;
+      }
+
+      #result {
+        margin-top: 20px;
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>지뢰찾기같은 운테스트</h1>
+    <table id="board"></table>
+    <button onclick="genGrid();">새로운 게임</button>
+    <div id="result"></div>
+
+    <script>
+      const clickLimit = 8;
+      let clickCount = 0;
+      let minesCount = 0;
+      let grid = document.getElementById("board");
+
+      genGrid();
+
+      // 게임 보드 생성
+      function genGrid() {
+        grid.innerHTML = ""; // 이전 게임 보드 초기화
+        clickCount = 0; // 클릭 수 초기화
+        minesCount = 0; // 지뢰 수 초기화
+        document.getElementById("result").innerText = ""; // 결과 초기화
+
+        for (let i = 0; i < 4; i++) {
+          let row = grid.insertRow(i); // 행 추가
+          for (let j = 0; j < 4; j++) {
+            let cell = row.insertCell(j); // 셀 추가
+            cell.onclick = function () {
+              clickBox(this); // 클릭 시 clickBox 함수 호출
+            };
+
+            // 각 셀에 지뢰 속성 추가(50%)
+            let mine = document.createAttribute("mine"); // 새로운 속성 생성
+            mine.value = Math.random() < 0.5 ? "true" : "false"; // 지뢰 여부 결정
+            cell.setAttributeNode(mine); // 셀에 속성 추가
+          }
+        }
+      }
+
+      // 셀을 클릭했을 때 실행
+      function clickBox(cell) {
+        // 중복방지
+        if (cell.classList.contains("clicked") || clickCount >= clickLimit)
+          return;
+
+        clickCount++; // 클릭 수 증가
+
+        if (cell.getAttribute("mine") === "true") {
+          // 지뢰일 경우
+          cell.className = "mine"; // 셀 배경을 빨간색
+          minesCount++; //카운트증가
+        } else {
+          // 지뢰가 아닐 경우
+          cell.className = "clicked"; // 셀 배경을 파란색
+        }
+
+        // 클릭한 셀 수가 8개에 도달하면 결과 표시
+        if (clickCount === clickLimit) {
+          document.getElementById(
+            "result"
+          ).innerText = `8번 클릭 중 지뢰의 개수: ${minesCount}`;
+        }
+      }
+    </script>
+  </body>
+</html>
